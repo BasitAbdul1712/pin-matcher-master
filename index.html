@@ -42,7 +42,7 @@
                                 <div id="all-Clear-btn" class="button">C</div>
                             </div>
                             <div>
-                                <button id="submitBtn" type="submit" class="submit-btn">Submit</button>
+                                <button onclick="submitHandleBtn()" id="submitBtn" type="submit" class="submit-btn">Submit</button>
                                 <p id="actionBtn" class="action-left">3 try left</p>
                             </div>
                     </div>
@@ -87,7 +87,7 @@
         }) */
 
         const allClearBtn = document.getElementById("all-Clear-btn").addEventListener('click', function () {
-            document.getElementById("input-box").value = ""
+        document.getElementById("input-box").value = "" // t clear inbox
         })
 
         const SingleClearBtn = document.getElementById("single-clear-btn").addEventListener('click',function () {
@@ -97,8 +97,8 @@
             inputBox.value = (inputBox.value).substring(0, (inputBox.value).length - 1 );
         })
 
-        const submitBtn = document.getElementById("submitBtn").addEventListener('click', function() {
-        //generate input value from box
+        function submitHandleBtn() {
+            //generate input value from box
         const generateInput = document.getElementById("generate-Input").value;
         //input value from calculator box
         const inputBox = document.getElementById('input-box').value
@@ -107,7 +107,8 @@
             alert('Alert! please input a value')
         }
         else if (generateInput == inputBox) {
-            document.getElementById("pin-matched").style.display ='block'
+            document.getElementById("pin-matched").style.display ='block';
+            document.getElementById("pin-not-matched").style.display ='none';
             document.getElementById("generate-PinBtn").style.
             backgroundColor = '#33FF3E';
             document.getElementById("generate-PinBtn").style.borderColor = '#1B5007'
@@ -118,25 +119,36 @@
         } 
         else {
             document.getElementById("pin-not-matched").style.display ='block';
+            document.getElementById("pin-not-matched").style.backgroundColor='red';
+            document.getElementById("pin-matched").style.display ='none';
             document.getElementById("generate-PinBtn").style.
-            backgroundColor = '#FF3341'
+            backgroundColor = 'red'
             document.getElementById("generate-PinBtn").style.borderColor = '#452510'
-            document.getElementById("generate-Input").value = '';
-            document.getElementById('input-box').value = '';
             //generate button input change
             document.getElementById("generate-PinBtn").textContent = 'Wrong!';
+            
+            tryLeftBtn()
+            }
+            
+            
         }
-        tryLeftBtn()
-    })
 
-        let count = 0;
-        const pinMatched = document.getElementById("actionBtn");
         
+        const pinMatched = document.getElementById("actionBtn");
+        let tryLeftCount = 0;
         function tryLeftBtn() {
-            count++;
-        if (pinMatched == 1) {
+            tryLeftCount++;
+        if (tryLeftCount == 1) {
             pinMatched.innerText = 'two attempt left';
         }
+        else if (tryLeftCount == 2) {
+            pinMatched.innerText = 'one attempt left';
+        }
+        else {
+            pinMatched.innerText = 'Your attempt is finished!';
+        }
+        
+        return tryLeftCount;
     }
         
 
