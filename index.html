@@ -12,47 +12,135 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="pin-generator half-width">
-                    <input class="form-control" type="text">
-                    <button class="generate-btn">Generate Pin</button>
+                    <input id="generate-Input" class="form-control text-center" type="text" value="">
+                    <button onclick="pinGenerateHandler()" id="generate-PinBtn" class="generate-btn">Generate Pin</button>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="input-section half-width">
-                    <input class="form-control" type="text">
+                    <input id="input-box" class="form-control text-center" type="text" value="">
                     <div class="numbers">
                         <div class="calc-body">
                             <div class="calc-button-row">
-                              <div class="button">7</div>
-                              <div class="button">8</div>
-                              <div class="button">9</div>
+                              <div onclick="numberClickHandler('numberBtn-seven')" id="numberBtn-seven" class="button">7</div>
+                              <div onclick="numberClickHandler('numberBtn-eight')" id="numberBtn-eight" class="button">8</div>
+                              <div onclick="numberClickHandler('numberBtn-nine')" id="numberBtn-nine" class="button">9</div>
                             </div>
                             <div class="calc-button-row">
-                              <div class="button">4</div>
-                              <div class="button">5</div>
-                              <div class="button">6</div>
+                              <div onclick="numberClickHandler('numberBtn-four')" id="numberBtn-four" class="button">4</div>
+                              <div onclick="numberClickHandler('numberBtn-five')" id="numberBtn-five" class="button">5</div>
+                              <div onclick="numberClickHandler('numberBtn-six')" id="numberBtn-six" class="button">6</div>
                             </div>
                             <div class="calc-button-row">
-                              <div class="button">1</div>
-                              <div class="button">2</div>
-                              <div class="button">3</div>
+                              <div onclick="numberClickHandler('numberBtn-one')" id="numberBtn-one" class="button">1</div>
+                              <div onclick="numberClickHandler('numberBtn-two')" id="numberBtn-two" class="button">2</div>
+                              <div onclick="numberClickHandler('numberBtn-three')" id="numberBtn-three" class="button">3</div>
                             </div>
                             <div class="calc-button-row">
-                                <div class="button"><</div>
-                                <div class="button">0</div>
-                                <div class="button">C</div>
+                                <div id="single-clear-btn" class="button"><</div>
+                                <div onclick="numberClickHandler('numberBtn-zero')" id="numberBtn-zero" class="button">0</div>
+                                <div id="all-Clear-btn" class="button">C</div>
                             </div>
                             <div>
-                                <button type="submit" class="submit-btn">Submit</button>
-                                <p class="action-left">3 try left</p>
+                                <button id="submitBtn" type="submit" class="submit-btn">Submit</button>
+                                <p id="actionBtn" class="action-left">3 try left</p>
                             </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="notify-section">
-            <p class="notify">❌ Pin Didn't Match, Please try again</p>
-            <p class="notify">✅ Pin Matched... Secret door is opening for you</p>
+            <p id="pin-not-matched" class="notify">❌ Pin Didn't Match, Please try again</p>
+            <p id="pin-matched" class="notify">✅ Pin Matched... Secret door is opening for you</p>
         </div>
     </div>
+
+    <script>
+        // pin match or don't matched button hide
+        document.getElementById("pin-not-matched").style.display ='none';
+        document.getElementById("pin-matched").style.display ='none';
+
+        //Generate pin click
+        function pinGenerateHandler() {
+        const generateInput = document.getElementById("generate-Input");
+        const randomNumber = Math.round(1000+ Math.random()*1000);
+        generateInput.value = randomNumber  ; 
+        document.getElementById("generate-Input").value = generateInput.value;
+        }
+
+
+       
+        function numberClickHandler(Btn) {
+         const numberBtnSeven = document.getElementById(Btn)
+        const sevenBtn = parseInt(numberBtnSeven.innerText);
+        //console.log(sevenBtn);
+        const inputBox = document.getElementById('input-box').value;
+        //console.log(inputBox);
+        document.getElementById('input-box').value = inputBox + sevenBtn;   
+        }
+        
+    /*const numberBtnSeven = document.getElementById(Btn).addEventListener('click', function() {
+        const sevenBtn = parseInt(numberBtnSeven.innerText);
+            console.log(sevenBtn);
+        const inputBox = document.getElementById('input-box').value;
+        document.getElementById('input-box').value = inputBox + sevenBtn;       
+        }) */
+
+        const allClearBtn = document.getElementById("all-Clear-btn").addEventListener('click', function () {
+            document.getElementById("input-box").value = ""
+        })
+
+        const SingleClearBtn = document.getElementById("single-clear-btn").addEventListener('click',function () {
+            console.log('dfdf');
+            const inputBox = document.getElementById("input-box");
+            //deleteSingleElement = inputBox.value;
+            inputBox.value = (inputBox.value).substring(0, (inputBox.value).length - 1 );
+        })
+
+        const submitBtn = document.getElementById("submitBtn").addEventListener('click', function() {
+        //generate input value from box
+        const generateInput = document.getElementById("generate-Input").value;
+        //input value from calculator box
+        const inputBox = document.getElementById('input-box').value
+        
+        if (generateInput == "" || inputBox == "") {
+            alert('Alert! please input a value')
+        }
+        else if (generateInput == inputBox) {
+            document.getElementById("pin-matched").style.display ='block'
+            document.getElementById("generate-PinBtn").style.
+            backgroundColor = '#33FF3E';
+            document.getElementById("generate-PinBtn").style.borderColor = '#1B5007'
+            document.getElementById("generate-Input").value = '';
+            document.getElementById('input-box').value = '';
+            //generate button input change
+            document.getElementById("generate-PinBtn").textContent = 'Correct'
+        } 
+        else {
+            document.getElementById("pin-not-matched").style.display ='block';
+            document.getElementById("generate-PinBtn").style.
+            backgroundColor = '#FF3341'
+            document.getElementById("generate-PinBtn").style.borderColor = '#452510'
+            document.getElementById("generate-Input").value = '';
+            document.getElementById('input-box').value = '';
+            //generate button input change
+            document.getElementById("generate-PinBtn").textContent = 'Wrong!';
+        }
+        tryLeftBtn()
+    })
+
+        let count = 0;
+        const pinMatched = document.getElementById("actionBtn");
+        
+        function tryLeftBtn() {
+            count++;
+        if (pinMatched == 1) {
+            pinMatched.innerText = 'two attempt left';
+        }
+    }
+        
+
+
+    </script>
 </body>
 </html>
