@@ -67,8 +67,6 @@
         generateInput.value = randomNumber  ; 
         document.getElementById("generate-Input").value = generateInput.value;
         }
-
-
        
         function numberClickHandler(Btn) {
          const numberBtnSeven = document.getElementById(Btn)
@@ -147,6 +145,7 @@
         }
         else {
             pinMatched.innerText = 'Your attempt is finished!';
+            document.getElementById("pin-not-matched").textContent = "Please don't tray again";
         }
         
         return tryLeftCount;
